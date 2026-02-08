@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Pentair Thermal WiFi",
+        "description": "Enter your Pentair Thermal WiFi account credentials to connect your thermostats.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password. Please check your credentials and try again.",
+      "cannot_connect": "Failed to connect to Pentair Thermal WiFi service. Please check your internet connection and try again.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This account is already configured."
+    }
+  }
+}

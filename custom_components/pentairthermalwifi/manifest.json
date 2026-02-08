@@ -1,0 +1,12 @@
+{
+  "domain": "pentairthermalwifi",
+  "name": "Pentair Thermal WiFi",
+  "codeowners": ["@martinalmlof"],
+  "config_flow": true,
+  "documentation": "https://github.com/martinalmlof/pentairthermalwifi_hass",
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/martinalmlof/pentairthermalwifi_hass/issues",
+  "requirements": ["pypentairthermalwifi"],
+  "version": "0.1.0"
+}
