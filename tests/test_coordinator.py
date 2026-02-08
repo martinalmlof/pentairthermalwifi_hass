@@ -1,5 +1,4 @@
 """Test the Pentair Thermal WiFi coordinator."""
-from datetime import timedelta
 from unittest.mock import AsyncMock
 
 import pytest
@@ -7,7 +6,6 @@ from pypentairthermalwifi import APIError
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import UpdateFailed
-from homeassistant.util import dt as dt_util
 
 from custom_components.pentairthermalwifi.coordinator import (
     PentairThermalWiFiCoordinator,
@@ -40,11 +38,11 @@ async def test_coordinator_update_failure(
     assert coordinator.last_update_success is False
 
 
-async def test_coordinator_polling_interval(
+async def test_coordinator_push_notifications(
     hass: HomeAssistant, mock_pentair_client
 ) -> None:
-    """Test coordinator respects polling interval."""
+    """Test coordinator uses push notifications instead of polling."""
     coordinator = PentairThermalWiFiCoordinator(hass, mock_pentair_client)
 
-    # Verify update interval is set correctly
-    assert coordinator.update_interval == timedelta(seconds=30)
+    # Verify no polling interval is set (we use push notifications)
+    assert coordinator.update_interval is None

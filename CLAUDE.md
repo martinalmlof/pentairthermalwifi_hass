@@ -23,11 +23,13 @@ A Home Assistant custom integration for Pentair Thermal WiFi thermostats (Senz W
 
 ### Integration Flow
 1. User adds integration via UI config flow (`config_flow.py`)
-2. Config entry is created with device host
+2. Config entry is created with email/password credentials
 3. `async_setup_entry()` in `__init__.py` initializes the pypentairthermalwifi client
-4. Client is stored in `hass.data[DOMAIN][entry.entry_id]`
-5. Platforms (climate, sensor, etc.) are loaded and create entities
-6. Each entity uses the stored client to communicate with the device
+4. Coordinator fetches initial data and starts push notification monitoring
+5. Client is stored in `hass.data[DOMAIN][entry.entry_id]`
+6. Platforms (climate, sensor, etc.) are loaded and create entities
+7. Each entity reads from coordinator data
+8. When thermostats change, push notifications update the coordinator automatically
 
 ### Entity Structure
 - All entities use `entry.entry_id` as the unique device identifier
@@ -105,7 +107,9 @@ GitHub Actions workflow automatically runs tests on push/PR:
 
 - **Authentication**: Uses email/password via `pypentairthermalwifi` library to access cloud API
 - **Config Flow**: UI-based configuration with credential validation
-- **Data Coordinator**: Uses `DataUpdateCoordinator` for efficient polling (30s interval)
+- **Data Coordinator**: Uses push notifications instead of polling for real-time updates
+- **Push Notifications**: Long-polling API keeps connection open until thermostat state changes
+- **Monitoring**: Automatically started when integration loads, stopped on unload
 - **Entities**: One climate entity + sensors per thermostat, all linked via device_info
 - **HVAC Modes**: Maps pypentairthermalwifi RegulationMode to HA HVACMode
   - OFF → HVACMode.OFF
@@ -113,4 +117,4 @@ GitHub Actions workflow automatically runs tests on push/PR:
   - SCHEDULE → HVACMode.AUTO
   - COMFORT → Preset mode
 - **Modern Patterns**: All async, CoordinatorEntity base, proper device grouping
-- **Integration Type**: "device" with "local_polling" IoT class (cloud-based API)
+- **Integration Type**: "device" with "cloud_push" IoT class (push notifications)

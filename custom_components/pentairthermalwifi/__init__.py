@@ -39,6 +39,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Fetch initial data
     await coordinator.async_config_entry_first_refresh()
 
+    # Start monitoring for push notifications
+    await coordinator.async_start_monitoring()
+
     # Store coordinator in hass.data
     hass.data[DOMAIN][entry.entry_id] = {
         COORDINATOR: coordinator,
@@ -55,8 +58,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     if unload_ok:
-        # Close the client
+        # Stop monitoring and close the client
         coordinator = hass.data[DOMAIN][entry.entry_id][COORDINATOR]
+        await coordinator.async_stop_monitoring()
         await coordinator.client.close()
 
         hass.data[DOMAIN].pop(entry.entry_id)

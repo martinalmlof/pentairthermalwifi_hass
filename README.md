@@ -4,10 +4,11 @@ A Home Assistant custom integration for Pentair Thermal WiFi thermostats (Senz W
 
 ## Features
 
+- **Real-time Updates**: Push notifications for instant state changes (no polling delay)
 - **Climate Control**: Full thermostat control with temperature setpoint
-- **Sensors**: Temperature readings (floor temperature, etc.)
-- **Switches**: Control heating modes and other device functions
-- **Binary Sensors**: Status indicators (heating, connectivity, etc.)
+- **Sensors**: Temperature readings (target temperature, comfort temperature)
+- **Binary Sensors**: Status indicators (heating, connectivity)
+- **Automatic Monitoring**: Background monitoring with automatic reconnection
 
 ## Installation
 
