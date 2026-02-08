@@ -1,0 +1,1 @@
+# pentairthermalwifi_hass
