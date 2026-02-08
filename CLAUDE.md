@@ -37,6 +37,27 @@ A Home Assistant custom integration for Pentair Thermal WiFi thermostats (Senz W
 
 ## Development Commands
 
+### Running Tests
+```bash
+# Install test dependencies
+pip install -r requirements_test.txt
+
+# Run all tests
+pytest
+
+# Run with coverage report
+pytest --cov=custom_components.pentairthermalwifi --cov-report=html
+
+# Run specific test file
+pytest tests/test_climate.py
+
+# Run with verbose output
+pytest -v
+
+# Run specific test
+pytest tests/test_climate.py::test_set_temperature
+```
+
 ### Testing in Home Assistant
 1. Copy integration to HA config: `cp -r custom_components/pentairthermalwifi /path/to/homeassistant/config/custom_components/`
 2. Restart Home Assistant
@@ -51,6 +72,34 @@ A Home Assistant custom integration for Pentair Thermal WiFi thermostats (Senz W
     logs:
       custom_components.pentairthermalwifi: debug
   ```
+
+## Test Coverage
+
+### Test Files
+- `test_config_flow.py` - Config flow UI testing (success, auth failure, duplicate)
+- `test_init.py` - Integration setup and unload
+- `test_climate.py` - Climate entity state and actions
+- `test_sensor.py` - Sensor entities
+- `test_binary_sensor.py` - Binary sensor entities
+- `test_coordinator.py` - Data coordinator polling and error handling
+
+### What's Tested
+✅ Config flow with valid/invalid credentials
+✅ Integration setup and teardown
+✅ Climate entity state attributes
+✅ Temperature setting and HVAC mode changes
+✅ Preset mode (comfort)
+✅ Sensor values and availability
+✅ Binary sensor states (heating, connectivity)
+✅ Offline thermostat handling
+✅ Coordinator data updates
+✅ Error handling and recovery
+
+### CI/CD
+GitHub Actions workflow automatically runs tests on push/PR:
+- Tests against Python 3.11 and 3.12
+- HACS validation
+- Hassfest validation (Home Assistant quality checks)
 
 ## Key Implementation Notes
 
