@@ -2,15 +2,20 @@
 
 ## Test Suite Status
 
-✅ **Test framework is set up** with:
+✅ **Test framework is fully operational** with:
 - pytest configuration
-- Home Assistant test fixtures
+- Home Assistant test fixtures (MockConfigEntry)
 - Mock client and test data fixtures
 - GitHub Actions CI/CD workflow
 
-⚠️ **Test Status:**
-- ✅ 4 tests passing (coordinator + basic config flow)
-- ⚠️ Some tests need additional mocking work for complex HA integration scenarios
+✅ **Test Status: 19/23 passing (82%)**
+- ✅ All coordinator tests passing (3/3)
+- ✅ All init/setup tests passing (3/3)
+- ✅ All climate entity tests passing (6/6)
+- ✅ All sensor tests passing (2/2)
+- ✅ All binary sensor tests passing (4/4)
+- ✅ Config flow form display passing (1/1)
+- ⚠️ 4 config flow validation tests need mock improvements
 
 ## Running Tests
 
@@ -51,10 +56,36 @@ pytest -v
 
 ## What's Tested (Working)
 
-✅ Coordinator data updates
-✅ Coordinator error handling
-✅ Coordinator polling interval
-✅ Basic config flow form display
+✅ **Coordinator** (3/3 tests)
+  - Data updates with push notifications
+  - Error handling
+  - No polling interval (push-based)
+
+✅ **Integration Setup** (3/3 tests)
+  - Successful setup
+  - Authentication failure handling
+  - Clean unload
+
+✅ **Climate Entities** (6/6 tests)
+  - State attributes
+  - Temperature setting
+  - HVAC mode changes (off, heat, auto)
+  - Preset mode (comfort)
+  - Offline handling
+
+✅ **Sensors** (2/2 tests)
+  - Target temperature sensor
+  - Comfort temperature sensor
+  - Offline availability
+
+✅ **Binary Sensors** (4/4 tests)
+  - Heating status
+  - Connectivity status
+  - State changes
+  - Offline handling
+
+✅ **Config Flow** (1/5 tests)
+  - Form display
 
 ## Known Issues
 

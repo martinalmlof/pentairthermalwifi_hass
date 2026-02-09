@@ -10,6 +10,7 @@ from pypentairthermalwifi import (
     ThermostatsResponse,
     UpdateThermostatResponse,
 )
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from homeassistant.const import CONF_EMAIL, CONF_PASSWORD
 
@@ -121,23 +122,15 @@ def mock_pentair_client(
 @pytest.fixture
 def mock_config_entry():
     """Create a mock config entry."""
-    from homeassistant.config_entries import ConfigEntry, ConfigEntryDisabler
-
-    return ConfigEntry(
-        version=1,
-        minor_version=0,
+    return MockConfigEntry(
         domain="pentairthermalwifi",
         title="Pentair Thermal (test@example.com)",
         data={
             CONF_EMAIL: "test@example.com",
             CONF_PASSWORD: "test_password",
         },
-        source="user",
         entry_id="test_entry_id",
         unique_id="test@example.com",
-        discovery_keys={},
-        options={},
-        subentries_data={},
     )
 
 

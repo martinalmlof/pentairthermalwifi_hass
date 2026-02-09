@@ -40,15 +40,15 @@ async def test_setup_entry_auth_failed(
 
     mock_client = AsyncMock()
     mock_client.authenticate.side_effect = AuthenticationError("Invalid credentials")
+    mock_client.close = AsyncMock()
 
-    with (
-        patch(
-            "custom_components.pentairthermalwifi.AsyncPentairThermalWifi",
-            return_value=mock_client,
-        ),
-        pytest.raises(ConfigEntryAuthFailed),
+    with patch(
+        "custom_components.pentairthermalwifi.AsyncPentairThermalWifi",
+        return_value=mock_client,
     ):
-        await hass.config_entries.async_setup(mock_config_entry.entry_id)
+        # Setup should fail but not raise (HA catches it)
+        result = await hass.config_entries.async_setup(mock_config_entry.entry_id)
+        assert result is False
 
     mock_client.close.assert_called_once()
 

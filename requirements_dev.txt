@@ -1,0 +1,14 @@
+# Development requirements for IDE support and linting
+homeassistant>=2024.1.0
+pypentairthermalwifi
+
+# Type checking
+mypy>=1.0.0
+
+# Linting
+ruff>=0.1.0
+
+# Testing (can also use requirements_test.txt)
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+pytest-homeassistant-custom-component>=0.13.0

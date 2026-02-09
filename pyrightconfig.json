@@ -1,0 +1,15 @@
+{
+  "include": [
+    "custom_components"
+  ],
+  "extraPaths": [
+    "custom_components"
+  ],
+  "typeCheckingMode": "basic",
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "pythonVersion": "3.11",
+  "pythonPlatform": "All",
+  "venvPath": ".",
+  "venv": "venv"
+}
