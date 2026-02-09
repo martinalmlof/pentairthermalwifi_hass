@@ -7,6 +7,6 @@
   "integration_type": "device",
   "iot_class": "cloud_push",
   "issue_tracker": "https://github.com/martinalmlof/pentairthermalwifi_hass/issues",
-  "requirements": ["pypentairthermalwifi"],
-  "version": "0.1.0"
+  "requirements": ["pypentairthermalwifi>=0.1.1"],
+  "version": "0.1.1"
 }
