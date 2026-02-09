@@ -1,6 +1,6 @@
 # Development requirements for IDE support and linting
 homeassistant>=2024.1.0
-pypentairthermalwifi
+pypentairthermalwifi>=0.1.1
 
 # Type checking
 mypy>=1.0.0
