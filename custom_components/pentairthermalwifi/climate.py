@@ -112,6 +112,8 @@ class PentairThermalWiFiClimate(CoordinatorEntity, ClimateEntity):
     def target_temperature(self) -> float | None:
         """Return the temperature we try to reach."""
         if thermostat := self._thermostat:
+            if thermostat.regulation_mode == RegulationMode.BOOST:
+                return thermostat.boost_room_temp_celsius
             return thermostat.manual_temperature_celsius
         return None
 

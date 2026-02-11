@@ -53,7 +53,7 @@ def mock_thermostat():
         first_warming_daysleft=0,
         boost_duration=0,
         boost_floor_temp=2700,
-        boost_room_temp=2200,
+        boost_room_temp=2500,  # 25.0°C - distinct from manual (21.0) and comfort (22.0)
         sensor_application=1,
         no_sensor_pwm_index=0,
         online=True,
@@ -79,6 +79,14 @@ def mock_thermostat_offline(mock_thermostat):
     thermostat = mock_thermostat
     thermostat.online = False
     thermostat.heating = False
+    return thermostat
+
+
+@pytest.fixture
+def mock_thermostat_boost(mock_thermostat):
+    """Create a mock thermostat in boost mode."""
+    thermostat = mock_thermostat
+    thermostat.regulation_mode = RegulationMode.BOOST
     return thermostat
 
 

@@ -71,6 +71,25 @@ async def test_climate_entity_offline(
     assert state.state == "unavailable"
 
 
+async def test_climate_boost_target_temperature(
+    hass: HomeAssistant, mock_config_entry, mock_pentair_client, mock_thermostat_boost
+) -> None:
+    """Test that boost_room_temp is used as target temperature in boost mode."""
+    mock_config_entry.add_to_hass(hass)
+
+    with patch(
+        "custom_components.pentairthermalwifi.AsyncPentairThermalWifi",
+        return_value=mock_pentair_client,
+    ):
+        assert await hass.config_entries.async_setup(mock_config_entry.entry_id)
+        await hass.async_block_till_done()
+
+    state = hass.states.get("climate.living_room")
+    assert state
+    assert state.attributes["temperature"] == 25.0  # boost_room_temp=2500 → 25.0°C
+    assert state.attributes["preset_mode"] == "boost"
+
+
 async def test_set_temperature(
     hass: HomeAssistant, mock_config_entry, mock_pentair_client
 ) -> None:
