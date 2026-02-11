@@ -115,6 +115,7 @@ def mock_pentair_client(
     client.update_thermostat = AsyncMock(return_value=mock_update_response)
     client.set_manual_temperature = AsyncMock(return_value=mock_update_response)
     client.turn_off = AsyncMock(return_value=mock_update_response)
+    client.start_boost = AsyncMock(return_value=mock_update_response)
     client.close = AsyncMock()
     return client
 

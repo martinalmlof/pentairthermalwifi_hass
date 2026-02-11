@@ -13,7 +13,7 @@ from homeassistant.components.climate import (
     SERVICE_SET_PRESET_MODE,
     SERVICE_SET_TEMPERATURE,
     HVACMode,
-    PRESET_COMFORT,
+    PRESET_BOOST,
 )
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
@@ -166,10 +166,10 @@ async def test_set_hvac_mode_auto(
     assert call_args[0][1].regulation_mode == RegulationMode.SCHEDULE
 
 
-async def test_set_preset_mode_comfort(
+async def test_set_preset_mode_boost(
     hass: HomeAssistant, mock_config_entry, mock_pentair_client, mock_thermostat
 ) -> None:
-    """Test setting preset mode to comfort."""
+    """Test setting preset mode to boost."""
     mock_config_entry.add_to_hass(hass)
 
     with patch(
@@ -187,13 +187,10 @@ async def test_set_preset_mode_comfort(
         SERVICE_SET_PRESET_MODE,
         {
             ATTR_ENTITY_ID: entity_id,
-            ATTR_PRESET_MODE: PRESET_COMFORT,
+            ATTR_PRESET_MODE: PRESET_BOOST,
         },
         blocking=True,
     )
 
-    # Verify update_thermostat was called with COMFORT mode
-    mock_pentair_client.update_thermostat.assert_called_once()
-    call_args = mock_pentair_client.update_thermostat.call_args
-    assert call_args[0][0] == "1234567"
-    assert call_args[0][1].regulation_mode == RegulationMode.COMFORT
+    # Verify start_boost was called with the serial number and no end_time
+    mock_pentair_client.start_boost.assert_called_once_with("1234567")

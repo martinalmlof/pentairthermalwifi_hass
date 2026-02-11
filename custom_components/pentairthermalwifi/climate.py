@@ -10,7 +10,7 @@ from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityFeature,
     HVACMode,
-    PRESET_COMFORT,
+    PRESET_BOOST,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
@@ -27,7 +27,7 @@ _LOGGER = logging.getLogger(__name__)
 MODE_TO_HVAC = {
     RegulationMode.OFF: HVACMode.OFF,
     RegulationMode.MANUAL: HVACMode.HEAT,
-    RegulationMode.COMFORT: HVACMode.HEAT,
+    RegulationMode.BOOST: HVACMode.HEAT,
     RegulationMode.SCHEDULE: HVACMode.AUTO,
 }
 
@@ -69,7 +69,7 @@ class PentairThermalWiFiClimate(CoordinatorEntity, ClimateEntity):
         | ClimateEntityFeature.PRESET_MODE
     )
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT, HVACMode.AUTO]
-    _attr_preset_modes = [PRESET_COMFORT]
+    _attr_preset_modes = [PRESET_BOOST]
 
     def __init__(
         self,
@@ -153,8 +153,8 @@ class PentairThermalWiFiClimate(CoordinatorEntity, ClimateEntity):
     def preset_mode(self) -> str | None:
         """Return the current preset mode."""
         if thermostat := self._thermostat:
-            if thermostat.regulation_mode == RegulationMode.COMFORT:
-                return PRESET_COMFORT
+            if thermostat.regulation_mode == RegulationMode.BOOST:
+                return PRESET_BOOST
         return None
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
@@ -196,9 +196,6 @@ class PentairThermalWiFiClimate(CoordinatorEntity, ClimateEntity):
         if not thermostat:
             return
 
-        if preset_mode == PRESET_COMFORT:
-            thermostat.regulation_mode = RegulationMode.COMFORT
-            await self.coordinator.client.update_thermostat(
-                self._serial_number, thermostat
-            )
+        if preset_mode == PRESET_BOOST:
+            await self.coordinator.client.start_boost(self._serial_number)
             await self.coordinator.async_request_refresh()
