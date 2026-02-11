@@ -114,6 +114,8 @@ class PentairThermalWiFiClimate(CoordinatorEntity, ClimateEntity):
         if thermostat := self._thermostat:
             if thermostat.regulation_mode == RegulationMode.BOOST:
                 return thermostat.boost_room_temp_celsius
+            if thermostat.regulation_mode == RegulationMode.SCHEDULE:
+                return thermostat.comfort_temperature_celsius
             return thermostat.manual_temperature_celsius
         return None
 

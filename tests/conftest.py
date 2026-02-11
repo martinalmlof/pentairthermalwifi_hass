@@ -91,6 +91,14 @@ def mock_thermostat_boost(mock_thermostat):
 
 
 @pytest.fixture
+def mock_thermostat_schedule(mock_thermostat):
+    """Create a mock thermostat in schedule mode."""
+    thermostat = mock_thermostat
+    thermostat.regulation_mode = RegulationMode.SCHEDULE
+    return thermostat
+
+
+@pytest.fixture
 def mock_thermostats_response(mock_thermostat):
     """Create a mock thermostats response."""
     group = Group(

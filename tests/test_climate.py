@@ -90,6 +90,25 @@ async def test_climate_boost_target_temperature(
     assert state.attributes["preset_mode"] == "boost"
 
 
+async def test_climate_schedule_target_temperature(
+    hass: HomeAssistant, mock_config_entry, mock_pentair_client, mock_thermostat_schedule
+) -> None:
+    """Test that comfort_temperature is used as target temperature in schedule mode."""
+    mock_config_entry.add_to_hass(hass)
+
+    with patch(
+        "custom_components.pentairthermalwifi.AsyncPentairThermalWifi",
+        return_value=mock_pentair_client,
+    ):
+        assert await hass.config_entries.async_setup(mock_config_entry.entry_id)
+        await hass.async_block_till_done()
+
+    state = hass.states.get("climate.living_room")
+    assert state
+    assert state.state == HVACMode.AUTO
+    assert state.attributes["temperature"] == 22.0  # comfort_temperature=2200 → 22.0°C
+
+
 async def test_set_temperature(
     hass: HomeAssistant, mock_config_entry, mock_pentair_client
 ) -> None:
