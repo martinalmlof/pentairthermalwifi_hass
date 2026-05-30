@@ -9,6 +9,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_EMAIL, CONF_PASSWORD
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import COORDINATOR, DOMAIN, PLATFORMS
 from .coordinator import PentairThermalWiFiCoordinator
@@ -20,10 +21,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Pentair Thermal WiFi from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
-    # Create API client
+    # Create API client using HA-managed session
+    session = async_get_clientsession(hass)
     client = AsyncPentairThermalWifi(
         email=entry.data[CONF_EMAIL],
         password=entry.data[CONF_PASSWORD],
+        session=session,
     )
 
     # Authenticate and verify credentials

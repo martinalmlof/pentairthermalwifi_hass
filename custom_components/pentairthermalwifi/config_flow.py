@@ -10,6 +10,7 @@ from pypentairthermalwifi import AsyncPentairThermalWifi, AuthenticationError
 from homeassistant import config_entries
 from homeassistant.const import CONF_EMAIL, CONF_PASSWORD
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
 
@@ -37,9 +38,11 @@ class PentairThermalWiFiConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             # Validate credentials by attempting authentication
             try:
+                session = async_get_clientsession(self.hass)
                 async with AsyncPentairThermalWifi(
                     email=user_input[CONF_EMAIL],
                     password=user_input[CONF_PASSWORD],
+                    session=session,
                 ) as client:
                     await client.authenticate()
                     # Use email as unique ID
